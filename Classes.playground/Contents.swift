@@ -16,8 +16,22 @@ import Foundation
  
  Create a new class called `Person`. This class should include properties for a person's first and last name. Name these properties `firstName` and `lastName`. You should also create an initializer that takes a first and last name as parameters and assigns them to the property.
  */
-// write your code here
-
+class Person {
+    var firstName: String
+    var lastName: String
+    var fullName: String {
+        return "\(firstName) \(lastName)"
+    }
+    
+    init (firstName: String, lastName: String) {
+        self.firstName = firstName
+        self.lastName = lastName
+    }
+    
+    func greet(_ person: Person) -> String {
+        return "Hello, \(person.firstName)!"
+    }
+}
 
 
 
@@ -81,8 +95,22 @@ extension Double {
     }
 }
 
-// write your code here
-
+class Transaction {
+    var type: String
+    var amount: Double
+    var description: String {
+        var creditOrDebit = "debit"
+        if type == "in" {
+            creditOrDebit = "credit"
+        }
+        return "Transaction: \(creditOrDebit) in the amount of $\(amount.toMoney)"
+    }
+    
+    init (type: String, amount: Double){
+        self.type = type
+        self.amount = amount
+    }
+}
 
 
 
@@ -132,8 +160,40 @@ assert(transaction2.description == "Transaction: debit in the amount of $1.20", 
  
  Create an initializer for this class. It should only take one parameter: the owner of the account. When the class is first created (instantiated), the list of transactions should be empty.
  */
-// write your code here
-
+class BankAccount {
+    var owner: Person
+    var transactions: [Transaction]
+    var balance: Double {
+        get {
+            var amountInAccount: Double = 0
+            for item in transactions {
+                if item.type == "in" {
+                    amountInAccount += item.amount
+                } else {
+                    amountInAccount -= item.amount
+                }
+            }
+            return amountInAccount
+        }
+        set {
+            
+        }
+    }
+    init (owner:Person) {
+        self.owner = owner
+        self.transactions = []
+    }
+    
+    func deposit (_ amount: Double) {
+        let newTransaction = Transaction(type: "in", amount: amount)
+        self.transactions.append(newTransaction)
+    }
+    
+    func withdraw (_ amount: Double) {
+        let newTransaction = Transaction(type: "out", amount: amount)
+        self.transactions.append(newTransaction)
+    }
+}
 
 
 
